@@ -9,10 +9,10 @@ COPY web/package*.json ./
 RUN npm install --legacy-peer-deps
 
 COPY web/ ./
-RUN npm run build -- --force
+RUN npm run build
 
 # 后端构建阶段
-FROM golang:1.22-alpine AS backend-builder
+FROM golang:1.21-alpine AS backend-builder
 WORKDIR /app
 
 # 安装依赖
@@ -31,7 +31,7 @@ COPY --from=frontend-builder /app/web/dist ./web/dist
 RUN CGO_ENABLED=1 GOOS=linux go build -a -o cursor-reset-service .
 
 # 最终运行阶段
-FROM alpine:3.18
+FROM alpine:latest
 WORKDIR /app
 
 # 安装运行时依赖
@@ -45,8 +45,16 @@ COPY --from=backend-builder /app/cursor-reset-service .
 # 复制前端构建产物
 COPY --from=frontend-builder /app/web/dist ./web/dist
 
+# 定义环境变量
+ENV PORT=8080 \
+    DATABASE_URL="" \
+    ADMIN_USERNAME="" \
+    ADMIN_PASSWORD="" \
+    JWT_ADMIN_SECRET="" \
+    JWT_APP_SECRET=""
+
 # 暴露端口
-EXPOSE 8080
+EXPOSE ${PORT}
 
 # 启动应用
 CMD ["./cursor-reset-service"] 

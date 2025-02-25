@@ -6,16 +6,23 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        - PORT=${PORT}
+        - DATABASE_URL=${DATABASE_URL}
+        - ADMIN_USERNAME=${ADMIN_USERNAME}
+        - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+        - JWT_ADMIN_SECRET=${JWT_ADMIN_SECRET}
+        - JWT_APP_SECRET=${JWT_APP_SECRET}
     container_name: cursor-reset-app
     restart: always
     ports:
-      - "${PORT:-8080}:8080"
+      - "${PORT}:${PORT}"
     environment:
       - DATABASE_URL=${DATABASE_URL}
-      - PORT=8080
+      - PORT=${PORT}
       - GIN_MODE=release
-      - ADMIN_USERNAME=${ADMIN_USERNAME:-admin}
-      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin123}
-      - JWT_ADMIN_SECRET=${JWT_ADMIN_SECRET:-admin-secret-key}
-      - JWT_APP_SECRET=${JWT_APP_SECRET:-app-secret-key}
+      - ADMIN_USERNAME=${ADMIN_USERNAME}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - JWT_ADMIN_SECRET=${JWT_ADMIN_SECRET}
+      - JWT_APP_SECRET=${JWT_APP_SECRET}
 
