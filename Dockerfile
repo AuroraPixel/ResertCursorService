@@ -28,7 +28,7 @@ COPY . .
 COPY --from=frontend-builder /app/web/dist ./web/dist
 
 # 编译后端
-RUN CGO_ENABLED=1 GOOS=linux go build -a -o cursor-reset-service .
+RUN CGO_ENABLED=1 GOOS=linux go build -a -o cursor-reset-service ./cmd/server
 
 # 最终运行阶段
 FROM alpine:latest
