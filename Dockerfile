@@ -6,13 +6,13 @@ WORKDIR /app/web
 
 # 复制前端代码
 COPY web/package*.json ./
-RUN npm install
+RUN npm install --legacy-peer-deps
 
 COPY web/ ./
 RUN npm run build
 
 # 后端构建阶段
-FROM golang:1.21-alpine AS backend-builder
+FROM golang:1.22-alpine AS backend-builder
 WORKDIR /app
 
 # 安装依赖
