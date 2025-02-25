@@ -9,7 +9,7 @@ COPY web/package*.json ./
 RUN npm install --legacy-peer-deps
 
 COPY web/ ./
-RUN npm run build
+RUN npm run build -- --force
 
 # 后端构建阶段
 FROM golang:1.22-alpine AS backend-builder

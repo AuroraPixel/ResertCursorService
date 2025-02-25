@@ -1,15 +1,31 @@
 package jwt
 
 import (
+	"os"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
 )
 
 var (
-	adminJwtSecret = []byte("admin-secret-key") // 管理员token密钥
-	appJwtSecret   = []byte("app-secret-key")   // app token密钥
+	adminJwtSecret []byte
+	appJwtSecret   []byte
 )
+
+func init() {
+	// 从环境变量中读取 JWT 密钥，如果未设置则使用默认值
+	adminSecret := os.Getenv("JWT_ADMIN_SECRET")
+	if adminSecret == "" {
+		adminSecret = "admin-secret-key"
+	}
+	adminJwtSecret = []byte(adminSecret)
+
+	appSecret := os.Getenv("JWT_APP_SECRET")
+	if appSecret == "" {
+		appSecret = "app-secret-key"
+	}
+	appJwtSecret = []byte(appSecret)
+}
 
 type Claims struct {
 	AdminID uint `json:"adminId"`
