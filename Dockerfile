@@ -12,7 +12,7 @@ COPY web/ ./
 RUN npm run build
 
 # 后端构建阶段
-FROM golang:1.21-alpine AS backend-builder
+FROM golang:1.22-alpine AS backend-builder
 WORKDIR /app
 
 # 安装依赖
