@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  # 应用服务 - 前后端一体化
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cursor-reset-app
+    restart: always
+    ports:
+      - "${PORT:-8080}:8080"
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - PORT=8080
+      - GIN_MODE=release
+      - ADMIN_USERNAME=${ADMIN_USERNAME:-admin}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin123}
+      - JWT_ADMIN_SECRET=${JWT_ADMIN_SECRET:-admin-secret-key}
+      - JWT_APP_SECRET=${JWT_APP_SECRET:-app-secret-key}
+
